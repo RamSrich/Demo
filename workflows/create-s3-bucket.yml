@@ -11,18 +11,17 @@ jobs:
   create-s3-bucket:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: <AWS Region>
-
-      - name: Create S3 Bucket
+       steps:
+      - name: Set up AWS credentials
         run: |
-          aws s3api create-bucket --bucket <lasya126> --region <US East (ohio) us-east-2> --create-bucket-configuration LocationConstraint=<AWS Region>
+          echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> $GITHUB_ENV
 
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+
+      - name: Create S3 bucket
+        run: |
+          aws s3api create-bucket --bucket lasya126 --region us-east-1
