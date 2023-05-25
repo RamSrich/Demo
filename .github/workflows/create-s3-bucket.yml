@@ -1,0 +1,27 @@
+
+
+name: Create S3 Bucket
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-s3-bucket:
+    runs-on: ubuntu-latest
+
+       steps:
+      - name: Set up AWS credentials
+        run: |
+          echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> $GITHUB_ENV
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+
+      - name: Create S3 bucket
+        run: |
+          aws s3api create-bucket --bucket lasya126 --region us-east-1
